@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../../contexts/AuthProvider';
 import logo from '../../../../Images/jerry-kitchen-logo.png'
 
 const Header = () => {
+    const { user, logOut } = useContext(AuthContext);
+
+    const hadleLogOut = () => {
+        logOut()
+            .then()
+            .catch();
+    }
 
     const menu = <>
         <li><Link to='/'>Home</Link></li>
-        <li><Link>Services</Link></li>
-        <li><Link>Blogs</Link></li>
+        <li><Link to='/allservices'>Services</Link></li>
+        <li><Link to='/blogs'>Blogs</Link></li>
     </>
 
     return (
@@ -32,7 +40,17 @@ const Header = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <button className="btn btn-outline">Log In</button>
+                {
+                    user?.email ?
+                        <>
+                            <button onClick={hadleLogOut}>Sign Out</button>
+                        </>
+                        :
+                        <>
+                            <button className="btn btn-outline mr-2"><Link to='/login'>Log In</Link></button>
+                            <button className="btn btn-outline"><Link to='/registration'>Sign Up</Link></button>
+                        </>
+                }
             </div>
         </div>
     );
